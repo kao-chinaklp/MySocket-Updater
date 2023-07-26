@@ -64,16 +64,9 @@ int ProgressCallback(void* clientp, curl_off_t dltotal, curl_off_t dlnow, curl_o
             else printf(" ");
         }
         printf("]%d", int(progress*100.0));
-        printf("%");
-        std::this_thread::sleep_for(milliseconds(50));
+        std::this_thread::sleep_for(milliseconds(100));
     }
     return 0;
-}
-
-int DebugCallback(CURL *handle, curl_infotype type, char *data, size_t size, void *userptr) {
-    string DebugData(data, size);
-    printf("%s", DebugData.c_str());
-    return size;
 }
 
 string GetCurrentVersion(){
@@ -126,29 +119,45 @@ bool CheckVersion(const string Latest, const string Current){
     }
 }
 
+inline void quit(){
+    #ifdef _WIN32
+    system("pause");
+    #endif
+}
+
 int main(){
     #ifdef _WIN32
     system("chcp 65001");
     #endif
-    if(!init())return 0;
+    if(!init()){
+        quit();
+        return 0;
+    }
     CURLcode res;
     string FileName="MySocket.exe";
     FILE* File=nullptr;
+    ifstream ifile;
     string CurrentVersion=GetCurrentVersion();
     // 这里的token有时限，请自行更新
     string LatestVersion=GetLatestVersion("kao-chinaklp", "MySocket");
-    if(LatestVersion.empty())goto _end;
+    if(LatestVersion.empty()){
+        quit();
+        return 0;
+    }
     if(!CheckVersion(LatestVersion, CurrentVersion))goto _end;
-    File=fopen(FileName.c_str(), "w");
+    File=fopen(FileName.c_str(), "wb");
     if(File==nullptr){
         printf("无法写入文件！\n");
-        goto _end;
+        quit();
+        return 0;
     }
-    if(!init())goto _end;
+    if(!init()){
+        quit();
+        return 0;
+    }
+    printf("正在尝试连接服务器...\n");
     curl_easy_setopt(curl, CURLOPT_URL, DownloadUrl.c_str());
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-    curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, DebugCallback);
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);// 开启调试信息输出
     curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);// 进度条动画
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, DownloadCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, File);
@@ -157,13 +166,38 @@ int main(){
     printf("\n");
     if(res!=CURLE_OK){
         printf("更新失败！%s\n", curl_easy_strerror(res));
-        goto _end;
+        quit();
+        return 0;
     }
+    fclose(File);
     printf("更新成功！\n");
     _end:
-    fclose(File);
-    #ifdef _WIN32
-    system("pause");
-    #endif
+    ifile.open("libmysql.dll");
+    if(ifile.fail()){
+        printf("检测到依赖缺失，正在获取...\n");
+        if(!init()){          
+            quit();
+            return 0;
+        }
+        printf("正在下载libmysql.dll\n");
+        DownloadUrl="https://help.c6-play.top/libmysql.dll";
+        File=fopen("libmysql.dll", "wb");
+        curl_easy_setopt(curl, CURLOPT_URL, DownloadUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);// 进度条动画
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, DownloadCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, File);
+        res=curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        printf("\n");
+        if(res!=CURLE_OK){
+            printf("获取失败！%s\n", curl_easy_strerror(res));
+            quit();
+            return 0;
+        }
+        fclose(File);
+    }
+    __end:
+    quit();
     return 0;
 }
