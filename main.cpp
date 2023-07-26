@@ -136,7 +136,7 @@ int main(){
     FILE* File=nullptr;
     string CurrentVersion=GetCurrentVersion();
     // 这里的token有时限，请自行更新
-    string LatestVersion=GetLatestVersion("kao-chinaklp", "MySocket", "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");
+    string LatestVersion=GetLatestVersion("kao-chinaklp", "MySocket");
     if(LatestVersion.empty())goto _end;
     if(!CheckVersion(LatestVersion, CurrentVersion))goto _end;
     File=fopen(FileName.c_str(), "w");
