@@ -20,8 +20,8 @@ find_package(CURL REQUIRED)
 set(CMAKE_AR gcc-ar)
 set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++)
 
-target_compile_options(MySocket-Updater PRIVATE -fdiagnostics-color=always -pedantic -lcurl)
-# target_link_options(MySocket-Updater PRIVATE -flto -s)
+target_compile_options(MySocket-Updater PRIVATE -fdiagnostics-color=always -pedantic -lcurl -O3)
+target_link_options(MySocket-Updater PRIVATE -flto -s)
 
 # add curl
 target_include_directories(MySocket-Updater PRIVATE ${CURL_INCLUDE_DIR})

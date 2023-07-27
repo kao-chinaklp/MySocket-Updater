@@ -71,7 +71,7 @@ int ProgressCallback(void* clientp, curl_off_t dltotal, curl_off_t dlnow, curl_o
 
 string GetCurrentVersion(){
     ifstream file;
-    string line;
+    string line, key, value;
     string Version;
 	file.open("config.ini", std::ios::in);
     if(file.fail())return "";
@@ -79,9 +79,9 @@ string GetCurrentVersion(){
         int Idx=line.find('=');
         if(Idx==-1)continue;
         int EndIdx=line.find('\n', Idx);
-        string key=line.substr(0, Idx);
-        string value=line.substr(Idx+1, EndIdx-Idx-1);
-        if(key=="version")Version=value;
+        key=line.substr(0, Idx);
+        value=line.substr(Idx+1, EndIdx-Idx-1);
+		if(key=="version")Version=value;
     }
 	file.close();
     return Version;
@@ -139,7 +139,7 @@ int main(){
     ifstream ifile;
     string CurrentVersion=GetCurrentVersion();
     // 这里的token有时限，请自行更新
-    string LatestVersion=GetLatestVersion("kao-chinaklp", "MySocket");
+    string LatestVersion=GetLatestVersion("kao-chinaklp", "MySocket", "<your token>");
     if(LatestVersion.empty()){
         quit();
         return 0;
