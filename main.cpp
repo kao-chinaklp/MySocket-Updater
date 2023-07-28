@@ -157,6 +157,7 @@ int main(){
     }
     printf("正在尝试连接服务器...\n");
     curl_easy_setopt(curl, CURLOPT_URL, DownloadUrl.c_str());
+    curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, ftell(File));
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
     curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);// 进度条动画
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, DownloadCallback);
@@ -183,6 +184,7 @@ int main(){
         DownloadUrl="https://help.c6-play.top/libmysql.dll";
         File=fopen("libmysql.dll", "wb");
         curl_easy_setopt(curl, CURLOPT_URL, DownloadUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, ftell(File));
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
         curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);// 进度条动画
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, DownloadCallback);
