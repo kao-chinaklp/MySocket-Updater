@@ -189,7 +189,7 @@ int main(){
         printf("正在获取libmysql.dll\n");
     }
     DownloadUrl="https://help.c6-play.top/libmysql.dll";
-    if((res=FileDownload(DownloadUrl, "MySocket.exe"))!=CURLE_OK){
+    if((res=FileDownload(DownloadUrl, "libmysql.dll"))!=CURLE_OK){
         printf("更新失败！%s\n", curl_easy_strerror(res));
         quit();
         return 0;
@@ -200,7 +200,7 @@ int main(){
         if(!flag)printf("检测到依赖缺失，正在获取...\n");
         printf("正在下载libwinpthread.dll\n");
         DownloadUrl="https://help.c6-play.top/libwinpthread.dll";
-        if((res=FileDownload(DownloadUrl, "MySocket.exe"))!=CURLE_OK){
+        if((res=FileDownload(DownloadUrl, "libwinpthread.dll"))!=CURLE_OK){
             printf("更新失败！%s\n", curl_easy_strerror(res));
             quit();
             return 0;
