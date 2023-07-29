@@ -148,11 +148,11 @@ CURLcode FileDownload(string url, string FileName){
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, DownloadCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, File);
         res=curl_easy_perform(curl);
-        printf("\n");
         if(res==CURLE_OK)break;
     }
     fclose(File);
     curl_easy_cleanup(curl);
+    printf("\n");
     return res;
 }
 
@@ -187,26 +187,38 @@ int main(){
         flag=true;
         printf("检测到依赖缺失，正在获取...\n");
         printf("正在获取libmysql.dll\n");
-    }
-    DownloadUrl="https://help.c6-play.top/libmysql.dll";
-    if((res=FileDownload(DownloadUrl, "libmysql.dll"))!=CURLE_OK){
-        printf("更新失败！%s\n", curl_easy_strerror(res));
-        quit();
-        return 0;
-    }
-    else ifile.close();
-    ifile.open("libwinpthread.dll");
-    if(ifile.fail()){
-        if(!flag)printf("检测到依赖缺失，正在获取...\n");
-        printf("正在下载libwinpthread.dll\n");
-        DownloadUrl="https://help.c6-play.top/libwinpthread.dll";
-        if((res=FileDownload(DownloadUrl, "libwinpthread.dll"))!=CURLE_OK){
-            printf("更新失败！%s\n", curl_easy_strerror(res));
+        DownloadUrl="https://help.c6-play.top/libmysql.dll";
+        if((res=FileDownload(DownloadUrl, "libmysql.dll"))!=CURLE_OK){
+            printf("获取失败！%s\n", curl_easy_strerror(res));
             quit();
             return 0;
         }
     }
     else ifile.close();
+    ifile.open("libssl-1_1-x64.dll");
+    if(ifile.fail()){
+        if(!flag)printf("检测到依赖缺失，正在获取...\n");
+        printf("正在获取libssl-1_1-x64.dll\n");
+        DownloadUrl="https://help.c6-play.top/libssl-1_1-x64.dll";
+        if((res=FileDownload(DownloadUrl, "libssl-1_1-x64.dll"))!=CURLE_OK){
+        printf("获取失败！%s\n", curl_easy_strerror(res));
+        quit();
+        return 0;
+        }
+    }
+    else ifile.close();
+    ifile.open("libcrypto-1_1-x64.dll");
+    if(ifile.fail()){
+        if(!flag)printf("检测到依赖缺失，正在获取...\n");
+        printf("正在获取libcrypto-1_1-x64.dll\n");
+        DownloadUrl="https://help.c6-play.top/libcrypto-1_1-x64.dll";
+        if((res=FileDownload(DownloadUrl, "libcrypto-1_1-x64.dll"))!=CURLE_OK){
+            printf("获取失败！%s\n", curl_easy_strerror(res));
+            quit();
+            return 0;
+        }
+        else ifile.close();
+    }
     quit();
     return 0;
 }
