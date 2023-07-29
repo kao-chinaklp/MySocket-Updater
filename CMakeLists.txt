@@ -26,4 +26,4 @@ target_link_options(MySocket-Updater PRIVATE -flto -s)
 # add curl
 target_include_directories(MySocket-Updater PRIVATE ${CURL_INCLUDE_DIR})
 target_link_directories(MySocket-Updater PRIVATE ${CURL_LIBRARY})
-target_link_libraries(MySocket-Updater PRIVATE curl libwinpthread-1.dll)
+target_link_libraries(MySocket-Updater PRIVATE curl)
