@@ -18,7 +18,7 @@ set(CURL_ROOT_DIR "E:/tools kit/curl")
 set(CURL_USE_STATIC_LIBS TRUE)
 find_package(CURL REQUIRED)
 set(CMAKE_AR gcc-ar)
-set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++)
+set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-static-libstdc++ -static-libgcc")
 
 target_compile_options(MySocket-Updater PRIVATE -fdiagnostics-color=always -pedantic -lcurl -O3)
 target_link_options(MySocket-Updater PRIVATE -flto -s)
