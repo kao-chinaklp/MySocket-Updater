@@ -74,7 +74,7 @@ string GetCurrentVersion(){
     ifstream file;
     string line, key, value;
     string Version;
-	file.open("config.ini", std::ios::in);
+    file.open("config.ini", std::ios::in);
     if(file.fail())return "";
     while(getline(file, line)){
         int Idx=line.find('=');
