@@ -1,5 +1,11 @@
 #include "json.hpp"
 
+#include <curl/curl.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include <cstdio>
 #include <string>
 #include <chrono>
@@ -7,11 +13,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <curl/curl.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 using std::string;
 using std::ifstream;
@@ -82,9 +83,9 @@ string GetCurrentVersion(){
         int EndIdx=line.find('\n', Idx);
         key=line.substr(0, Idx);
         value=line.substr(Idx+1, EndIdx-Idx-1);
-		if(key=="version")Version=value;
+        if(key=="version")Version=value;
     }
-	file.close();
+    file.close();
     return Version;
 }
 
