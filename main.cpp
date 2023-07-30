@@ -1,7 +1,5 @@
-#include "json.hpp"
 
 #include <curl/curl.h>
-
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -13,6 +11,8 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+
+#include "json.hpp"
 
 using std::string;
 using std::ifstream;
