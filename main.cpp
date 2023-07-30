@@ -65,7 +65,7 @@ int ProgressCallback(void* clientp, curl_off_t dltotal, curl_off_t dlnow, curl_o
             else if(i==pos)printf(">");
             else printf(" ");
         }
-        printf("]%d%", int(progress*100.0));
+        printf("]%d%", static_cast<int>(progress*100.0));
         std::this_thread::sleep_for(milliseconds(100));
     }
     return 0;
